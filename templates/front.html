@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>/blog/</title>
+        <link rel="stylesheet" href="styles.css">
+    </head>
+    <body>
+        <h1>/blog/</h1>
+
+        <form method="post">
+            <label>
+                <div>Title</div>
+                <input type="text" name="title" value="{{title}}">
+            </label>
+            <label>
+                <div>Post</div>
+                <textarea name="blogPost">{{blogPost}}</textarea>
+            </label>
+
+            <div class="error">{{error}}</div>
+
+            <input type="submit">
+        </form>
+
+        <hr>
+
+        {% for blogPost in blogPosts%}
+        <div class="blogPost">
+            <div class="blogPost-title">{{blogPost.title}}</div>
+            <pre class="blogPost-body">{{blogPost.blogPost}}</pre>
+        </div>
+        {% endfor %}
+    </body>
+</html>
