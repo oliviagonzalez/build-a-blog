@@ -1,7 +1,6 @@
 import os
 import webapp2
 import jinja2
-
 from google.appengine.ext import db
 
 template_dir = os.path.join(os.path.dirname(__file__), 'templates')
@@ -25,14 +24,31 @@ class BlogPost(db.Model):
     created = db.DateTimeProperty(auto_now_add = True)
 
 
-class MainPage(Handler):
+class Index(Handler):
     def render_front(self, title="", blogPost="", error=""):
         blogPosts = db.GqlQuery("SELECT * FROM BlogPost "
                            "ORDER BY created DESC")
-        self.render("front.html", title=title, blogPost=blogPost, error=error, blogPosts=blogPosts)
+        self.render("frontpage.html", title=title, blogPost=blogPost, error=error, blogPosts=blogPosts)
 
     def get(self):
         self.render_front()
+
+class Blog(Handler):
+    def render_blog(self, title="", blogPost="", error=""):
+        blogPosts = db.GqlQuery("SELECT * FROM BlogPost ORDER BY created DESC LIMIT 5")
+        self.render("blog.html", title=title, blogPost=blogPost, error=error, blogPosts=blogPosts)
+
+    def get(self):
+        self.render_blog();
+
+class AddNewPost(Handler):
+    def render_new(self, title="", blogPost="", error=""):
+        blogPosts = db.GqlQuery("SELECT * FROM BlogPost "
+                           "ORDER BY created DESC")
+        self.render("add-new-post.html", title=title, blogPost=blogPost, error=error, blogPosts=blogPosts)
+
+    def get(self):
+        self.render_new()
 
     def post(self):
         title = self.request.get("title")
@@ -44,7 +60,14 @@ class MainPage(Handler):
 
             self.redirect("/")
         else:
-            error = "We need both a title and a post!"
-            self.render_front(title, blogPost,error)
+            if title:
+                error = "The submission requires a post."
+            if blogPost:
+                error = "The submission requires a title."
+            self.render_new(title, blogPost, error)
 
-app = webapp2.WSGIApplication([('/', MainPage)], debug=True)
+app = webapp2.WSGIApplication([
+        ('/', Index),
+        ('/blog', Blog),
+        ('/newpost', AddNewPost)
+        ], debug=True)

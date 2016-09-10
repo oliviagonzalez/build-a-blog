@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block content %}
+<p>
+<div>
+<a href="blog">View existing posts.</a>
+</div>
+<div>
+<a href="newpost">Create a new post.</a>
+</div>
+</p>
+
+<p>
+{% for blogPost in blogPosts%}
+<div class="blogPost">
+    <div class="blogPost-title">{{blogPost.title}}</div>
+    <pre class="blogPost-body">{{blogPost.blogPost}}</pre>
+</div>
+{% endfor %}
+</p>
+
+{% endblock %}
