@@ -23,7 +23,6 @@ class BlogPost(db.Model):
     blogPost = db.TextProperty(required = True)
     created = db.DateTimeProperty(auto_now_add = True)
 
-
 class Index(Handler):
     def render_front(self, title="", blogPost="", error=""):
         blogPosts = db.GqlQuery("SELECT * FROM BlogPost "
@@ -40,6 +39,13 @@ class Blog(Handler):
 
     def get(self):
         self.render_blog();
+
+class ViewPostHandler(Handler):
+    def get(self, id):
+        #self.response.write(id)
+        blogPost = [BlogPost.get_by_id(int(id))]
+        self.render("blog.html", blogPosts=blogPost)
+
 
 class AddNewPost(Handler):
     def render_new(self, title="", blogPost="", error=""):
@@ -69,5 +75,6 @@ class AddNewPost(Handler):
 app = webapp2.WSGIApplication([
         ('/', Index),
         ('/blog', Blog),
-        ('/newpost', AddNewPost)
+        ('/newpost', AddNewPost),
+        (webapp2.Route('/blog/<id:\d+>', ViewPostHandler))
         ], debug=True)

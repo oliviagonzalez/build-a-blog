@@ -13,7 +13,10 @@
 <p>
 {% for blogPost in blogPosts%}
 <div class="blogPost">
-    <div class="blogPost-title">{{blogPost.title}}</div>
+    <div class="blogPost-title">
+    	<a href="/blog/{{ blogPost.key().id() }}">{{blogPost.title}}</a>
+    	<input type="hidden" name="blog-post-link" value="{{blogPost.key().id()}}"/>
+    </div>
     <pre class="blogPost-body">{{blogPost.blogPost}}</pre>
 </div>
 {% endfor %}
