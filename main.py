@@ -70,6 +70,8 @@ class AddNewPost(Handler):
                 error = "The submission requires a post."
             if blogPost:
                 error = "The submission requires a title."
+            else:
+                error = "The submission requires a title and post"
             self.render_new(title, blogPost, error)
 
 app = webapp2.WSGIApplication([
