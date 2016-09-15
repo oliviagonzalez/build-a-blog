@@ -3,7 +3,9 @@
 {% block content %}
 {% for blogPost in blogPosts%}
 <div class="blogPost">
-    <div class="blogPost-title">{{blogPost.title}}</div>
+    <div class="blogPost-title">
+    	<a href="/blog/{{ blogPost.key().id() }}">{{blogPost.title}}</a>
+    </div>
     <pre class="blogPost-body">{{blogPost.blogPost}}</pre>
 </div>
 {% endfor %}
