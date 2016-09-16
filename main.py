@@ -64,14 +64,9 @@ class AddNewPost(Handler):
             a = BlogPost(title = title, blogPost = blogPost)
             a.put()
 
-            self.redirect("/")
+            self.redirect("/blog/"+str(a.key().id()))
         else:
-            if title:
-                error = "The submission requires a post."
-            if blogPost:
-                error = "The submission requires a title."
-            else:
-                error = "The submission requires a title and post"
+            error = "The submission requires a title and post"
             self.render_new(title, blogPost, error)
 
 app = webapp2.WSGIApplication([
